@@ -1,6 +1,11 @@
 name: Super-Linter
 
-on: push
+on: 
+  push:
+    paths-ignore:
+      - 'packages/**'
+      - 'DocComAPI/bin/**'
+      - 'DocComAPI/obj/**'
 
 jobs:
   super-lint:
