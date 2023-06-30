@@ -4,8 +4,11 @@ on:
   push:
     paths-ignore:
       - 'packages/**'
-      - 'DocComAPI/bin/**'
-      - 'DocComAPI/obj/**'
+      - 'DocComAPI/DocComAPI/bin/**'
+      - 'DocComAPI/DocComAPI/obj/**'
+      - 'DocComAPI/TestDocComAPI/bin/**'
+      - 'DocComAPI/TestDocComAPI/obj/**'
+      - 'DocComAPI/.vs/**'
 
 jobs:
   super-lint:
