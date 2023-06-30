@@ -66,26 +66,37 @@ namespace DocComAPI.Controllers
             return NotFound();
         }
 
+        private async Task<Boolean> CheckAuthorQuery(Guid authorId)
+        {
+            var author = await dbContext.Users.FindAsync(authorId);
+            if (author == null)
+            {
+                return false;
+            }
+            List<document> list = await dbContext.Documents.Where(document => document.author == authorId).ToListAsync();
+            if (list.IsNullOrEmpty())
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         //Get all formatted documents from one author
         [HttpGet]
         [Route("{author:guid}")]
         public async Task<IActionResult> GetAllFormattedDocumentsFromAuthor([FromRoute] Guid authorId)
         {
-            var author = await dbContext.Users.FindAsync(authorId);
-            if (author == null)
-            {
-                return BadRequest();
-            }
-            List<document> list = await dbContext.Documents.Where(document => document.author == authorId).ToListAsync();
-            if (list.IsNullOrEmpty())
-            {
-                return NotFound();
-            }
+            var authorCheck = await CheckAuthorQuery(authorId);
 
-            List<viewDocument> result = await ConvertDocuments(list);
+            if (authorCheck)
+            {
+                List<document> list = await dbContext.Documents.Where(document => document.author == authorId).ToListAsync();
+                List<viewDocument> result = await ConvertDocuments(list);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            return BadRequest();
         }
 
         //Get all documents from one author
@@ -93,19 +104,14 @@ namespace DocComAPI.Controllers
         [Route("{author:guid}")]
         public async Task<IActionResult> GetAllDocumentsFromAuthor([FromRoute] Guid authorId)
         {
-            var author = await dbContext.Users.FindAsync(authorId);
-            if (author == null)
-            {
-                return BadRequest();
-            }
+            var authorCheck = await CheckAuthorQuery(authorId);
 
-            List<document> list = await dbContext.Documents.Where(document => document.author == authorId).ToListAsync();
-            if (list.IsNullOrEmpty())
+            if (authorCheck)
             {
-                return NotFound();
+                List<document> list = await dbContext.Documents.Where(document => document.author == authorId).ToListAsync();
+                return Ok(list);
             }
-
-            return Ok(list);
+            return BadRequest();
         }
 
         //Add one document

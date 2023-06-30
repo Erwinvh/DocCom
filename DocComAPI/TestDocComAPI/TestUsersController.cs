@@ -7,7 +7,7 @@ namespace TestDocComAPI
 {
     public class TestUsersController
     {
-        private static DbContextOptions<DocComAPIDBContext>  dbContextOptions = new DbContextOptionsBuilder<DocComAPIDBContext>().UseInMemoryDatabase("DocComDB").Options;
+        private static DbContextOptions<DocComAPIDBContext> dbContextOptions = new DbContextOptionsBuilder<DocComAPIDBContext>().UseInMemoryDatabase("DocComDB").Options;
 
         DocComAPIDBContext dbContext;
         UsersController usersController;
@@ -24,7 +24,8 @@ namespace TestDocComAPI
 
 
         [OneTimeTearDown]
-        public void CleanUp() { 
+        public void CleanUp()
+        {
             dbContext.Database.EnsureDeleted();
         }
 
@@ -69,7 +70,8 @@ namespace TestDocComAPI
             if (users == null)
             {
                 Assert.Fail();
-            }else if (users.Count() == 1)
+            }
+            else if (users.Count() == 1)
             {
                 Assert.Pass();
             }
@@ -92,7 +94,7 @@ namespace TestDocComAPI
             var user = okResult.Value as user;
 
 
-            var updateRequest = new updateUserRequest { username = "TestPerson 1", email = addRequest.email, password = addRequest.password, securityLevel = 0};
+            var updateRequest = new updateUserRequest { username = "TestPerson 1", email = addRequest.email, password = addRequest.password, securityLevel = 0 };
             await usersController.UpdateUser(user.id, updateRequest);
 
             var actionResult2 = await usersController.GetUser(user.id);
@@ -106,7 +108,8 @@ namespace TestDocComAPI
             else if (user2.username == "TestPerson 1")
             {
                 Assert.Pass();
-            }else if (user2.username == user.username)
+            }
+            else if (user2.username == user.username)
             {
                 Assert.Fail();
             }

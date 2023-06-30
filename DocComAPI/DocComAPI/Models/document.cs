@@ -15,7 +15,7 @@
 
         public int documentStatus { get; set; }
 
-        public string documentLocation { get; set;}
+        public string documentLocation { get; set; }
 
         public int documentSecurityLevel { get; set; }
 
