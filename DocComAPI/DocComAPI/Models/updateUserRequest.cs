@@ -11,6 +11,5 @@
 
         public int securityLevel { get; set; }
 
-
     }
 }

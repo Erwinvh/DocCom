@@ -21,7 +21,7 @@ namespace DocComAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            return Ok( await dbContext.Users.ToListAsync());
+            return Ok(await dbContext.Users.ToListAsync());
         }
 
         //Get single user
@@ -40,7 +40,8 @@ namespace DocComAPI.Controllers
 
         //Add one user
         [HttpPost]
-        public async Task<IActionResult> AddUser(addUserRequest request) {
+        public async Task<IActionResult> AddUser(addUserRequest request)
+        {
 
             var user = new user()
             {
@@ -64,11 +65,11 @@ namespace DocComAPI.Controllers
         public async Task<IActionResult> UpdateUser([FromRoute] Guid id, updateUserRequest request)
         {
             var user = await dbContext.Users.FindAsync(id);
-            if(user != null)
+            if (user != null)
             {
                 user.email = request.email;
                 user.password = request.password;
-                user.securityLevel = request.securityLevel; 
+                user.securityLevel = request.securityLevel;
                 user.username = request.username;
 
                 await dbContext.SaveChangesAsync();
@@ -99,7 +100,7 @@ namespace DocComAPI.Controllers
                 foreach (document document in documents)
                 {
                     List<comment> docComments = await dbContext.Comments.Where(comment => comment.subject == document.id).ToListAsync();
-                    foreach(comment comment in docComments)
+                    foreach (comment comment in docComments)
                     {
                         dbContext.Comments.Remove(comment);
                     }

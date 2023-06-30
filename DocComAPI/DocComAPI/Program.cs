@@ -1,8 +1,6 @@
 using DocComAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
-
-
 namespace DocComAPI
 {
     public class Program
@@ -28,7 +26,7 @@ namespace DocComAPI
             var dbName = Environment.GetEnvironmentVariable("DB_NAME");
             var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
             var connectionString = $"Data source={dbHost};Initial Catalog={dbName};User ID=SA;Password={dbPassword};TrustServerCertificate=true";
- 
+
             builder.Services.AddDbContext<DocComAPIDBContext>(options => options.UseSqlServer(connectionString, builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
             var app = builder.Build();

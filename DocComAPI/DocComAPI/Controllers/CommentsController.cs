@@ -58,7 +58,7 @@ namespace DocComAPI.Controllers
             {
                 var poster = await dbContext.Users.FindAsync(comment.poster);
                 var subject = await dbContext.Documents.FindAsync(comment.subject);
-                if (subject == null|| poster == null)
+                if (subject == null || poster == null)
                 {
                     return BadRequest();
                 }

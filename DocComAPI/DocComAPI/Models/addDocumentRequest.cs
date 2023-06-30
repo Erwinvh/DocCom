@@ -9,6 +9,5 @@
 
         public string documentType { get; set; }
 
-
     }
 }

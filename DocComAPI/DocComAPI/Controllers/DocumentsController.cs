@@ -213,7 +213,8 @@ namespace DocComAPI.Controllers
                     result.Add(additionView);
                 }
 
-                var resultPage = new page {
+                var resultPage = new page
+                {
                     id = id,
                     title = document.title,
                     documentStatus = document.documentStatus,
@@ -240,9 +241,12 @@ namespace DocComAPI.Controllers
             {
                 viewDocument addition = new viewDocument();
                 var author = await dbContext.Users.FindAsync(document.author);
-                if (author == null) {
+                if (author == null)
+                {
                     addition.author = "Error 404: Author not found";
-                } else{
+                }
+                else
+                {
                     addition.author = author.username;
                 }
                 addition.date = document.date;

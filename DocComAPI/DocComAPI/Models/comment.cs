@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DocComAPI.Models
+﻿namespace DocComAPI.Models
 {
     public class comment
     {
@@ -16,7 +14,6 @@ namespace DocComAPI.Models
         public int commentStatus { get; set; }
 
         public DateTime date { get; set; }
-
 
     }
 }

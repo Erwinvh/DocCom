@@ -5,31 +5,30 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DocComAPI.Data
 {
-    public class DocComAPIDBContext: DbContext
+    public class DocComAPIDBContext : DbContext
     {
 
-        public DocComAPIDBContext(DbContextOptions options) : base(options) {
+        public DocComAPIDBContext(DbContextOptions options) : base(options)
+        {
             try
             {
                 var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
-                if(databaseCreator != null)
+                if (databaseCreator != null)
                 {
                     if (!databaseCreator.CanConnect()) databaseCreator.Create();
                     if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-
-
 
         }
 
         public DbSet<user> Users { get; set; }
         public DbSet<document> Documents { get; set; }
         public DbSet<comment> Comments { get; set; }
-
 
     }
 }

@@ -13,8 +13,5 @@
 
         public int documentStatus { get; set; }
 
-
-
-
     }
 }
