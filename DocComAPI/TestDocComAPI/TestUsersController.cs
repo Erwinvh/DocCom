@@ -139,15 +139,11 @@ namespace TestDocComAPI
             var actionResult = await usersController.GetAllUsers();
             var okResult = actionResult as OkObjectResult;
             var users = okResult.Value as List<user>;
-            if (users == null)
-            {
-                Assert.Fail();
-            }
-            else if (users.Count() == 4 && users[3].email == addRequest.email && users[3].username == addRequest.username)
+            if (users != null && users.Count() == 4 && users[3].email == addRequest.email && users[3].username == addRequest.username)
             {
                 Assert.Pass();
             }
-            else { Assert.Fail(); }
+            Assert.Fail();
         }
 
         [Test]
@@ -158,17 +154,7 @@ namespace TestDocComAPI
                 username = "Testman 1",
                 password = "000000"
             };
-            var actionresult = await usersController.LoginUsername(login);
-            var okResult = actionresult as OkObjectResult;
-            if (okResult != null && okResult.Value != null)
-            {
-                var id = okResult.Value.ToString();
-                if (id == AuthorID1.ToString())
-                {
-                    Assert.Pass();
-                }
-            }
-            Assert.Fail();
+            LoginCheck( await usersController.LoginUsername(login));
         }
 
         [Test]
@@ -179,8 +165,12 @@ namespace TestDocComAPI
                 email = "Test@tesmail.com",
                 password = "000000"
             };
-            var actionresult = await usersController.LoginEmail(login);
-            var okResult = actionresult as OkObjectResult;
+            LoginCheck(await usersController.LoginEmail(login));
+        }
+
+        private void LoginCheck(IActionResult actionResult)
+        {
+            var okResult = actionResult as OkObjectResult;
             if (okResult != null && okResult.Value != null)
             {
                 var id = okResult.Value.ToString();
@@ -239,15 +229,11 @@ namespace TestDocComAPI
             var actionResult = await usersController.GetAllUsers();
             var okResult = actionResult as OkObjectResult;
             var users = okResult.Value as List<user>;
-            if (users == null)
-            {
-                Assert.Fail();
-            }
-            else if (users.Count() == 2)
+            if (users != null && users.Count() == 2)
             {
                 Assert.Pass();
             }
-            else { Assert.Fail(); }
+            Assert.Fail();
         }
 
         [Test]
