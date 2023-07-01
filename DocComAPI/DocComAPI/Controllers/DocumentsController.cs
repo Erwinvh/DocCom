@@ -66,7 +66,9 @@ namespace DocComAPI.Controllers
             return NotFound();
         }
 
-        private async Task<Boolean> CheckAuthorQuery(Guid authorId)
+        //This method whether the person is an author of any documents
+        [NonAction]
+        private async Task<bool> CheckAuthorQuery(Guid authorId)
         {
             var author = await dbContext.Users.FindAsync(authorId);
             if (author == null)
@@ -80,7 +82,6 @@ namespace DocComAPI.Controllers
             }
             return true;
         }
-
 
         //Get all formatted documents from one author
         [HttpGet]
@@ -164,7 +165,6 @@ namespace DocComAPI.Controllers
 
         }
 
-
         //delete single document
         [HttpDelete]
         [Route("{id:guid}")]
@@ -184,7 +184,6 @@ namespace DocComAPI.Controllers
             }
             return NotFound();
         }
-
 
         //Get Full document page
         [HttpGet]
@@ -239,33 +238,22 @@ namespace DocComAPI.Controllers
             return NotFound();
         }
 
+        //This method converts a list of documents 
         [NonAction]
-        public async Task<List<viewDocument>> ConvertDocuments(List<document> documents)
+        private async Task<List<viewDocument>> ConvertDocuments(List<document> documents)
         {
             var result = new List<viewDocument>();
             foreach (var document in documents)
             {
-                viewDocument addition = new viewDocument();
-                var author = await dbContext.Users.FindAsync(document.author);
-                if (author == null)
-                {
-                    addition.author = "Error 404: Author not found";
-                }
-                else
-                {
-                    addition.author = author.username;
-                }
-                addition.date = document.date;
-                addition.title = document.title;
-                addition.documentStatus = document.documentStatus;
-                addition.documentType = document.documentType;
+                viewDocument addition = await convertDocument(document);
                 result.Add(addition);
             }
             return result;
         }
 
+        //This method converts a document model to a document as the viewer would see it
         [NonAction]
-        public async Task<viewDocument> convertDocument(document document)
+        private async Task<viewDocument> convertDocument(document document)
         {
             var result = new viewDocument();
             var author = await dbContext.Users.FindAsync(document.author);
@@ -282,18 +270,9 @@ namespace DocComAPI.Controllers
             result.documentStatus = document.documentStatus;
             result.documentType = document.documentType;
 
-
             return result;
         }
 
-
-
-
     }
-
-
-
-
-
 
 }

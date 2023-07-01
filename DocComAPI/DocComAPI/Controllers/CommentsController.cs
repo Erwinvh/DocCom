@@ -200,7 +200,7 @@ namespace DocComAPI.Controllers
             return NotFound();
         }
 
-
+        //This method converts a comment model into a comment that the viewer would see.
         [NonAction]
         public async Task<commentView> convertComment(comment comment)
         {
@@ -233,40 +233,16 @@ namespace DocComAPI.Controllers
             return result;
         }
 
-
+        //This method converts a list of comment models into comment views as the viewer would see them.
         [NonAction]
         public async Task<List<commentView>> convertComments(List<comment> comments)
         {
             var result = new List<commentView>();
             foreach (var comment in comments)
             {
-                commentView additionView = new commentView
-                {
-                    content = comment.content,
-                    commentStatus = comment.commentStatus,
-                    date = comment.date
-                };
-                var subject = await dbContext.Documents.FindAsync(comment.subject);
-                if (subject != null)
-                {
-                    additionView.subjectTitle = subject.title;
-                }
-                else
-                {
-                    additionView.subjectTitle = "Error 404: Subject not found";
-                }
-                var poster = await dbContext.Users.FindAsync(comment.poster);
-                if (poster != null)
-                {
-                    additionView.posterUsername = poster.username;
-                }
-                else
-                {
-                    additionView.posterUsername = "Error 404: Poster not found";
-                }
+                commentView additionView = await convertComment(comment);
                 result.Add(additionView);
             }
-
 
             return result;
         }

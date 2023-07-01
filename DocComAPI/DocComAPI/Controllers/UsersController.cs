@@ -2,6 +2,7 @@
 using DocComAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DocComAPI.Controllers
 {
@@ -36,6 +37,67 @@ namespace DocComAPI.Controllers
             }
 
             return NotFound();
+        }
+
+        //Login api call with username
+        [HttpGet]
+        public async Task<IActionResult> LoginUsername([FromQuery] UsernameLogin usernameLogin)
+        {
+            List<user> users = await retrieveUsers(usernameLogin.username, true);
+            if (users.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return checkPassword(users, usernameLogin.password);
+            }
+        }
+
+        //Login api call with email
+        [HttpGet]
+        public async Task<IActionResult> LoginEmail([FromQuery]emailLogin emailLogin)
+        {
+            List<user> users = await retrieveUsers(emailLogin.email, false);
+            if (users.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return checkPassword(users, emailLogin.password);
+            }
+        }
+
+        //checks password against the users list that has been added 
+        [NonAction]
+        private IActionResult checkPassword(List<user> users, string password)
+        {
+            foreach (user user in users)
+            {
+                if (user != null && user.password == password)
+                {
+                    return Ok(user.id.ToString());
+                }
+            }
+            return NotFound();
+        }
+
+        //Retrieves users based on name or email. Duplicates can exist so it returns a list to which the system will check which it needs to be. 
+        //In the future the emails and usernames cannot be duplicate.
+        [NonAction]
+        private async Task<List<user>> retrieveUsers(string searchQuery, bool isUsername)
+        {
+            List<user> users;
+            if (isUsername)
+            {
+                users = await dbContext.Users.Where(user=> user.username == searchQuery).ToListAsync();
+            }
+            else
+            {
+                users = await dbContext.Users.Where(user => user.email == searchQuery).ToListAsync();
+            }
+            return users;
         }
 
         //Add one user
@@ -79,7 +141,6 @@ namespace DocComAPI.Controllers
             return NotFound();
 
         }
-
 
         //delete single user, the related comments the user made themselves and the documents made by the user with the related comments to those documents.
         [HttpDelete]
