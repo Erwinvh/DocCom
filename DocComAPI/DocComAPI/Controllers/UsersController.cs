@@ -56,7 +56,7 @@ namespace DocComAPI.Controllers
 
         //Login api call with email
         [HttpGet]
-        public async Task<IActionResult> LoginEmail([FromQuery]emailLogin emailLogin)
+        public async Task<IActionResult> LoginEmail([FromQuery] emailLogin emailLogin)
         {
             List<user> users = await retrieveUsers(emailLogin.email, false);
             if (users.IsNullOrEmpty())
@@ -91,7 +91,7 @@ namespace DocComAPI.Controllers
             List<user> users;
             if (isUsername)
             {
-                users = await dbContext.Users.Where(user=> user.username == searchQuery).ToListAsync();
+                users = await dbContext.Users.Where(user => user.username == searchQuery).ToListAsync();
             }
             else
             {

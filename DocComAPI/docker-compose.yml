@@ -31,6 +31,7 @@ services:
       - DB_Host=doccomdb
       - DB_NAME=DocCom
       - DB_SA_PASSWORD=DocComAPIPW1!
+      - ASPNETCORE_URLS=http://+:80
     networks:
         - doccomapinetwork
   

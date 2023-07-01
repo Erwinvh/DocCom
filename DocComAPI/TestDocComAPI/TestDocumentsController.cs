@@ -145,7 +145,7 @@ namespace TestDocComAPI
             var docactionresult = await documentsController.GetAllDocuments();
             var docokResult = docactionresult as OkObjectResult;
             var documents = docokResult.Value as List<document>;
-            if (documents.Count()==4)
+            if (documents.Count() == 4)
             {
                 Assert.Pass();
             }
@@ -165,7 +165,7 @@ namespace TestDocComAPI
             var docactionresult = await documentsController.GetDocument(DocID3);
             var docokResult = docactionresult as OkObjectResult;
             var document = docokResult.Value as document;
-            if(document.title == "txt or word" && document.documentStatus == 1)
+            if (document.title == "txt or word" && document.documentStatus == 1)
             {
                 Assert.Pass();
             }
