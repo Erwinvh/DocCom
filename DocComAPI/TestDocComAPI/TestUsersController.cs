@@ -154,7 +154,7 @@ namespace TestDocComAPI
                 username = "Testman 1",
                 password = "000000"
             };
-            LoginCheck( await usersController.LoginUsername(login));
+            LoginCheck(await usersController.LoginUsername(login));
         }
 
         [Test]
