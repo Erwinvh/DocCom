@@ -1,9 +1,5 @@
 version: '3.4'
 
-networks:
-    doccomapinetwork:
-
-
 services:
   doccomdb:
     container_name: DocComAPIDB
@@ -13,8 +9,6 @@ services:
     environment:
         - ACCEPT_EULA=Y
         - SA_PASSWORD=DocComAPIPW1!
-    networks:
-        - doccomapinetwork
   
         
   doccomapi:
@@ -32,7 +26,6 @@ services:
       - DB_NAME=DocCom
       - DB_SA_PASSWORD=DocComAPIPW1!
       - ASPNETCORE_URLS=http://+:80
-    networks:
-        - doccomapinetwork
+      - ASPNETCORE_ENVIRONMENT:Development
   
   

@@ -6,6 +6,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ENV ASPNETCORE_ENVIRONMENT = Development
 WORKDIR /src
 COPY ["DocComAPI/DocComAPI.csproj", "DocComAPI/"]
 RUN dotnet restore "DocComAPI/DocComAPI.csproj"
@@ -19,4 +20,4 @@ RUN dotnet publish "DocComAPI.csproj" -c Release -o /app/publish /p:UseAppHost=f
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DocComAPI.dll"]
+ENTRYPOINT ["dotnet", "DocComAPI.dll", "--environment-Development"]
